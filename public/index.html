@@ -1,83 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Women's Safety Alert System</title>
-    <!-- Link to Bootstrap CSS for improved layout and styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            background-color: #f5f5f5;
-            font-family: 'Arial', sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin-top: 50px;
-            padding: 30px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        h1 {
-            text-align: center;
-            color: #ff4d4d;
-            font-weight: bold;
-        }
-        p {
-            text-align: center;
-            font-size: 1.1em;
-        }
-        .btn-custom {
-            background-color: #ff4d4d;
-            color: white;
-            width: 100%;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 50px;
-            transition: background-color 0.3s ease;
-        }
-        .btn-custom:hover {
-            background-color: #e63939;
-        }
-        #status {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 1.2em;
-            color: #333;
-        }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-top: 1px solid #ddd;
-        }
-    </style>
-</head>
-<body>
 
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #2b2b2b, #3d3d3d, #5e5e5e);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease infinite;
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        position: relative;
+        top: 100px;
+        max-width: 800px;
+        margin-top: 50px;
+        padding: 30px;
+        background: rgba(50, 50, 50, 0.85); /* Dark semi-transparent background */
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for contrast */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+        backdrop-filter: blur(10px); /* Frosted glass effect */
+        
+        /* Flex settings to center content */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+        /* Entrance animation */
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: fadeInSlideDown 1s ease forwards;
+      }
+
+      h1 {
+        text-align: center;
+        color: #ffffff;
+        font-weight: bold;
+      }
+
+      p {
+        text-align: center;
+        font-size: 1.1em;
+        color: #e0e0e0;
+      }
+      
+      .btn-custom {
+        background-color: #ff4d4d;
+        color: white;
+        height: 100px;
+        width: 100%;
+        font-size: 30px;
+        padding: 10px 20px;
+        border-radius: 50px;
+        margin: 0px;
+        transition: background-color 0.3s ease;
+      }
+      .btn-custom:hover {
+        background-color: #e63939;
+      }
+      #status {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        color: #333;
+        padding: 10px;
+      }
+      footer {
+        text-align: center;
+        margin-top: 0px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+      }
+      nav.navbar {
+        animation: fadeIn 1s ease-in-out;
+      }
+      .footer {
+        background-color: #1e1e1e;
+        color: #b0b0b0;
+        text-align: center;
+        padding: 20px;
+      }
+      @keyframes fadeInSlideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary fixed-top" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Bishnoi Gang Women Safety Alert System</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BGWSAS</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="about-index.html">About
+                </a>
+              </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
     <!-- Main Content -->
     <div class="container">
-        <h1>Women's Safety Alert System</h1>
-        <p>Click the button below to send an emergency alert and start recording.</p>
+      <h1>Women's Safety Alert System</h1>
+      <p>
+        Click the button below to send an emergency alert and start recording.
+      </p>
 
-        <!-- Button to send alert and start recording -->
-        <button id="alertButton" class="btn btn-custom">Send Alert & Start Recording</button>
+      <!-- Button to send alert and start recording -->
+      <button id="alertButton" class="btn btn-custom">
+        Send Alert & Start Recording
+      </button>
 
-        <!-- Audio playback after recording -->
-        <audio id="audioPlayback" controls style="display:none; width: 100%; margin-top: 20px;"></audio>
+      <!-- Audio playback after recording -->
+      <audio
+        id="audioPlayback"
+        controls
+        style="display: none; width: 100%; margin-top: 20px"
+      ></audio>
 
-        <!-- Status message display -->
-        <p id="status"></p>
+      <!-- Status message display -->
+      <p id="status"></p>
     </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Women's Safety System. All rights reserved.</p>
-    </footer>
-
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -85,138 +205,139 @@
 
     <!-- Script for handling the alert and recording functionality -->
     <script>
-        const alertButton = document.getElementById('alertButton');
-        const statusMessage = document.getElementById('status');
-        const audioPlayback = document.getElementById('audioPlayback');
+      const alertButton = document.getElementById("alertButton");
+      const statusMessage = document.getElementById("status");
+      const audioPlayback = document.getElementById("audioPlayback");
 
-        let mediaRecorder;
-        let audioChunks = [];
+      let mediaRecorder;
+      let audioChunks = [];
 
-        // Function to send alert with actual location
-        async function sendAlert(latitude, longitude) {
-            try {
-                const response = await fetch('/api/send-alert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ latitude, longitude })
+      // Function to send alert with actual location
+      async function sendAlert(latitude, longitude) {
+        try {
+          const response = await fetch("/api/send-alert", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ latitude, longitude }),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            statusMessage.innerText = "Alert sent successfully";
+            statusMessage.style.color = "green";
+          } else {
+            statusMessage.innerText = "Failed to send alert";
+            statusMessage.style.color = "red";
+          }
+        } catch (err) {
+          console.error("Error sending alert:", err);
+          statusMessage.innerText = "Error sending alert";
+          statusMessage.style.color = "red";
+        }
+      }
+
+      // Function to get the user's location using the Geolocation API
+      function getLocation() {
+        return new Promise((resolve, reject) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                resolve({
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
                 });
-
-                const result = await response.json();
-                if (result.success) {
-                    statusMessage.innerText = 'Alert sent successfully';
-                    statusMessage.style.color = 'green';
-                } else {
-                    statusMessage.innerText = 'Failed to send alert';
-                    statusMessage.style.color = 'red';
-                }
-            } catch (err) {
-                console.error('Error sending alert:', err);
-                statusMessage.innerText = 'Error sending alert';
-                statusMessage.style.color = 'red';
-            }
-        }
-
-        // Function to get the user's location using the Geolocation API
-        function getLocation() {
-            return new Promise((resolve, reject) => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve({
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude
-                            });
-                        },
-                        (error) => {
-                            reject('Geolocation permission denied or unavailable');
-                        }
-                    );
-                } else {
-                    reject('Geolocation not supported by this browser');
-                }
-            });
-        }
-
-        // Function to start recording audio
-        async function startRecording() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                };
-
-                mediaRecorder.onstop = async () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const audioURL = URL.createObjectURL(audioBlob);
-                    audioPlayback.src = audioURL;
-                    audioPlayback.style.display = 'block';
-
-                    // Upload the recording after stopping
-                    await uploadRecording(audioBlob);
-                };
-
-                mediaRecorder.start();
-                statusMessage.innerText = 'Recording started...';
-                statusMessage.style.color = '#ff4d4d';
-
-                // Automatically stop recording after 2 minutes (120000 milliseconds)
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                    statusMessage.innerText = 'Recording stopped. Uploading...';
-                }, 10000); // 2 minutes
-
-            } catch (err) {
-                console.error('Error accessing microphone:', err);
-                statusMessage.innerText = 'Error accessing microphone';
-                statusMessage.style.color = 'red';
-            }
-        }
-
-        // Function to upload the recording
-        async function uploadRecording(audioBlob) {
-            const formData = new FormData();
-            formData.append('file', audioBlob, 'recording.webm');
-
-            try {
-                const response = await fetch('/api/upload-recording', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    statusMessage.innerText += ' | Recording uploaded successfully';
-                    statusMessage.style.color = 'green';
-                } else {
-                    statusMessage.innerText += ' | Failed to upload recording';
-                    statusMessage.style.color = 'red';
-                }
-            } catch (err) {
-                console.error('Error uploading recording:', err);
-                statusMessage.innerText += ' | Error uploading recording';
-                statusMessage.style.color = 'red';
-            }
-        }
-
-        // Start the process when the button is clicked
-        alertButton.addEventListener('click', async () => {
-            try {
-                // Get the actual geolocation before sending the alert
-                const location = await getLocation();
-                await sendAlert(location.latitude, location.longitude);  // Send alert with real coordinates
-                startRecording();   // Then start recording
-            } catch (error) {
-                console.error('Error getting location:', error);
-                statusMessage.innerText = 'Error getting location';
-                statusMessage.style.color = 'red';
-            }
+              },
+              (error) => {
+                reject("Geolocation permission denied or unavailable");
+              }
+            );
+          } else {
+            reject("Geolocation not supported by this browser");
+          }
         });
+      }
+
+      // Function to start recording audio
+      async function startRecording() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              audioChunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            const audioURL = URL.createObjectURL(audioBlob);
+            audioPlayback.src = audioURL;
+            audioPlayback.style.display = "block";
+
+            // Upload the recording after stopping
+            await uploadRecording(audioBlob);
+          };
+
+          mediaRecorder.start();
+          statusMessage.innerText = "Recording started...";
+          statusMessage.style.color = "#ff4d4d";
+
+          // Automatically stop recording after 2 minutes (120000 milliseconds)
+          setTimeout(() => {
+            mediaRecorder.stop();
+            statusMessage.innerText = "Recording stopped. Uploading...";
+          }, 10000); // 2 minutes
+        } catch (err) {
+          console.error("Error accessing microphone:", err);
+          statusMessage.innerText = "Error accessing microphone";
+          statusMessage.style.color = "red";
+        }
+      }
+
+      // Function to upload the recording
+      async function uploadRecording(audioBlob) {
+        const formData = new FormData();
+        formData.append("file", audioBlob, "recording.webm");
+
+        try {
+          const response = await fetch("/api/upload-recording", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            statusMessage.innerText += " | Recording uploaded successfully";
+            statusMessage.style.color = "green";
+          } else {
+            statusMessage.innerText += " | Failed to upload recording";
+            statusMessage.style.color = "red";
+          }
+        } catch (err) {
+          console.error("Error uploading recording:", err);
+          statusMessage.innerText += " | Error uploading recording";
+          statusMessage.style.color = "red";
+        }
+      }
+
+      // Start the process when the button is clicked
+      alertButton.addEventListener("click", async () => {
+        try {
+          // Get the actual geolocation before sending the alert
+          const location = await getLocation();
+          await sendAlert(location.latitude, location.longitude); // Send alert with real coordinates
+          startRecording(); // Then start recording
+        } catch (error) {
+          console.error("Error getting location:", error);
+          statusMessage.innerText = "Error getting location";
+          statusMessage.style.color = "red";
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
