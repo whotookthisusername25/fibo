@@ -58,10 +58,14 @@
             animation: fadeInSlideDown 0.5s ease forwards;
         }
 
+        /* Enhanced audio player styles */
         .audio-card audio {
             width: 100%;
             margin-top: 10px;
+            border-radius: 5px;
             background-color: #e2e3e5;
+            border: none;
+            outline: none;
         }
 
         /* Map container */
@@ -177,7 +181,7 @@
             const recordingElement = document.createElement('div');
             recordingElement.classList.add('audio-card');
             recordingElement.innerHTML = `
-                <p>🎙️ New recording uploaded: <a href="${audioUrl}" target="_blank">Download</a></p>
+                <p>🎙️ New recording uploaded: <a href="${audioUrl}" target="_blank" class="text-white">Download</a></p>
                 <audio controls>
                     <source src="${audioUrl}" type="audio/webm">
                     Your browser does not support the audio tag.
