@@ -129,6 +129,27 @@
           transform: translateY(0);
         }
       }
+
+      /* New styles for audio player */
+      .audio-player {
+        background-color: #444; /* Dark background for the player */
+        border-radius: 10px;
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .audio-player audio {
+        width: 100%;
+        outline: none; /* Remove outline on focus */
+        border-radius: 5px; /* Rounded corners */
+      }
+      .audio-controls {
+        display: flex;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -169,8 +190,6 @@
                 <a class="nav-link" aria-current="page" href="about-index.html">About
                 </a>
               </li>
-                </ul>
-              </li>
             </ul>
           </div>
         </div>
@@ -189,11 +208,12 @@
       </button>
 
       <!-- Audio playback after recording -->
-      <audio
-        id="audioPlayback"
-        controls
-        style="display: none; width: 100%; margin-top: 20px"
-      ></audio>
+      <div class="audio-player" id="audioPlayer" style="display: none; margin-top: 20px">
+        <audio
+          id="audioPlayback"
+          controls
+        ></audio>
+      </div>
 
       <!-- Status message display -->
       <p id="status"></p>
@@ -208,6 +228,7 @@
       const alertButton = document.getElementById("alertButton");
       const statusMessage = document.getElementById("status");
       const audioPlayback = document.getElementById("audioPlayback");
+      const audioPlayer = document.getElementById("audioPlayer");
 
       let mediaRecorder;
       let audioChunks = [];
@@ -277,6 +298,7 @@
             const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
             const audioURL = URL.createObjectURL(audioBlob);
             audioPlayback.src = audioURL;
+            audioPlayer.style.display = "flex"; // Show audio player
             audioPlayback.style.display = "block";
 
             // Upload the recording after stopping
@@ -287,11 +309,11 @@
           statusMessage.innerText = "Recording started...";
           statusMessage.style.color = "#ff4d4d";
 
-          // Automatically stop recording after 2 minutes (120000 milliseconds)
+          // Automatically stop recording after 10 seconds
           setTimeout(() => {
             mediaRecorder.stop();
             statusMessage.innerText = "Recording stopped. Uploading...";
-          }, 10000); // 2 minutes
+          }, 10000); // 10 seconds
         } catch (err) {
           console.error("Error accessing microphone:", err);
           statusMessage.innerText = "Error accessing microphone";
