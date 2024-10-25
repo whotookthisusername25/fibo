@@ -4,40 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emergency Response Dashboard</title>
+    <!-- Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .alert-card {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .audio-card {
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+            color: #383d41;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .audio-card audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #e2e6ea;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Emergency Response Dashboard</h1>
+        <h1 class="text-center">Emergency Response Dashboard</h1>
+        <hr>
+        <!-- Alerts Section -->
         <h2>Alerts</h2>
-        <div id="alerts"></div>
+        <div id="alerts" class="mb-4">
+            <!-- Alerts will be injected here -->
+        </div>
+
+        <!-- Map Section -->
+        <h2>Alert Location Map</h2>
+        <div id="map"></div> <!-- Map container -->
+
+        <!-- Audio Recordings Section -->
         <h2>Audio Recordings</h2>
-        <div id="recordings"></div>
+        <div id="recordings">
+            <!-- Audio recordings will be injected here -->
+        </div>
     </div>
 
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Emergency Response Dashboard</p>
+    </footer>
+
+    <!-- Leaflet JS for the map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const alertsDiv = document.getElementById('alerts');
         const recordingsDiv = document.getElementById('recordings');
         const socket = io();
 
+        // Initialize the Leaflet map
+        const map = L.map('map').setView([0, 0], 2);  // Default global view
+
+        // Add a tile layer (map design) from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to create and update markers on the map
+        function updateMap(latitude, longitude) {
+            const marker = L.marker([latitude, longitude]).addTo(map);
+            map.setView([latitude, longitude], 13);  // Zoom in on the new marker
+        }
+
         socket.on('new-alert', (data) => {
+            // Create alert element
             const alertElement = document.createElement('div');
-            alertElement.innerText = `Alert received! Latitude: ${data.latitude}, Longitude: ${data.longitude}, Time: ${data.timestamp}`;
+            alertElement.classList.add('alert-card');
+            alertElement.innerText = `🚨 Alert received! Latitude: ${data.latitude}, Longitude: ${data.longitude}, Time: ${new Date(data.timestamp).toLocaleTimeString()}`;
             alertsDiv.prepend(alertElement); // Add new alerts to the top
+
+            // Update the map with the alert location
+            updateMap(data.latitude, data.longitude);
         });
 
         socket.on('new-recording', (audioUrl) => {
             const recordingElement = document.createElement('div');
+            recordingElement.classList.add('audio-card');
             recordingElement.innerHTML = `
+                <p>🎙️ New recording uploaded: <a href="${audioUrl}" target="_blank">Download</a></p>
                 <audio controls>
                     <source src="${audioUrl}" type="audio/webm">
                     Your browser does not support the audio tag.
                 </audio>
-                <p>Recording uploaded: <a href="${audioUrl}" target="_blank">Download</a></p>
             `;
             recordingsDiv.prepend(recordingElement); // Add new recordings to the top
         });
     </script>
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
