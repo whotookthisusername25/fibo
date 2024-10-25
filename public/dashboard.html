@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Response Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Emergency Response Dashboard</h1>
+        <h2>Alerts</h2>
+        <div id="alerts"></div>
+        <h2>Audio Recordings</h2>
+        <div id="recordings"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const alertsDiv = document.getElementById('alerts');
+        const recordingsDiv = document.getElementById('recordings');
+        const socket = io();
+
+        socket.on('new-alert', (data) => {
+            const alertElement = document.createElement('div');
+            alertElement.innerText = `Alert received! Latitude: ${data.latitude}, Longitude: ${data.longitude}, Time: ${data.timestamp}`;
+            alertsDiv.prepend(alertElement); // Add new alerts to the top
+        });
+
+        socket.on('new-recording', (audioUrl) => {
+            const recordingElement = document.createElement('div');
+            recordingElement.innerHTML = `
+                <audio controls>
+                    <source src="${audioUrl}" type="audio/webm">
+                    Your browser does not support the audio tag.
+                </audio>
+                <p>Recording uploaded: <a href="${audioUrl}" target="_blank">Download</a></p>
+            `;
+            recordingsDiv.prepend(recordingElement); // Add new recordings to the top
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Women's Safety Alert System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary fixed-top" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Bishnoi Gang Women Safety Alert System</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BGWSAS</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">About
+                </a>
+              </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Women's Safety Alert System</h1>
+      <p>
+        Click the button below to send an emergency alert and start recording.
+      </p>
+
+      <button id="alertButton">Send Alert and Start Recording</button>
+
+      <audio id="audioPlayback" controls style="display: none"></audio>
+      <p id="status"></p>
+    </div>
+    <div class="card" data-bs-theme="dark">
+       <div class="card-header" data-bs-theme="dark">
+          Quote
+       </div>
+       <div class="card-body" data-bs-theme="dark">
+          <blockquote class="blockquote mb-0">
+          <p>A society's progress is measured by the safety of its women.</p>
+          <footer class="blockquote-footer">Bishnoi Gang</footer>
+          </blockquote>
+       </div>
+    </div>
+
+    <script>
+      const alertButton = document.getElementById("alertButton");
+      const statusMessage = document.getElementById("status");
+      const audioPlayback = document.getElementById("audioPlayback");
+
+      let mediaRecorder;
+      let audioChunks = [];
+
+      // Function to send alert
+      async function sendAlert() {
+        const dummyLatitude = 37.7749; // Replace with actual latitude
+        const dummyLongitude = -122.4194; // Replace with actual longitude
+
+        try {
+          const response = await fetch("/api/send-alert", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              latitude: dummyLatitude,
+              longitude: dummyLongitude,
+            }),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            statusMessage.innerText = "Alert sent successfully";
+          } else {
+            statusMessage.innerText = "Failed to send alert";
+          }
+        } catch (err) {
+          console.error("Error sending alert:", err);
+          statusMessage.innerText = "Error sending alert";
+        }
+      }
+
+      // Function to start recording audio
+      async function startRecording() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              audioChunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            const audioURL = URL.createObjectURL(audioBlob);
+            audioPlayback.src = audioURL;
+            audioPlayback.style.display = "block";
+
+            // Upload the recording after stopping
+            await uploadRecording(audioBlob);
+          };
+
+          // Start recording
+          mediaRecorder.start();
+          statusMessage.innerText = "Recording started...";
+
+          // Automatically stop recording after 2 minutes (120000 milliseconds)
+          setTimeout(() => {
+            mediaRecorder.stop();
+            statusMessage.innerText = "Recording stopped. Uploading...";
+          }, 10000); // 2 minutes
+        } catch (err) {
+          console.error("Error accessing microphone:", err);
+          statusMessage.innerText = "Error accessing microphone";
+        }
+      }
+
+      // Function to upload the recording
+      async function uploadRecording(audioBlob) {
+        const formData = new FormData();
+        formData.append("file", audioBlob, "recording.webm");
+
+        try {
+          const response = await fetch("/api/upload-recording", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            statusMessage.innerText += " | Recording uploaded successfully";
+          } else {
+            statusMessage.innerText += " | Failed to upload recording";
+          }
+        } catch (err) {
+          console.error("Error uploading recording:", err);
+          statusMessage.innerText += " | Error uploading recording";
+        }
+      }
+
+      // Start the process when the button is clicked
+      alertButton.addEventListener("click", async () => {
+        await sendAlert(); // Send alert first
+        startRecording(); // Then start recording
+      });
+    </script>
+  </body>
+</html>
